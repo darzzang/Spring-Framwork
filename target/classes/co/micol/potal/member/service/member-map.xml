@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="co.micol.potal.member.service.MemberMapper">
+	<select id="memberSelectList" resultType="co.micol.potal.member.service.MemberVO">
+		SELECT * FROM MEMBER
+	</select>
+	
+	<select id="memberSelect" 
+		parameterType="co.micol.potal.member.service.MemberVO"
+		resultType="co.micol.potal.member.service.MemberVO">
+		SELECT * FROM MEMBER
+		WHERE ID = #{id}
+		<if test="password != null">
+			AND PASSWORD = #{password}
+		</if>
+	</select>
+	
+	<insert id="memberInsert" parameterType="co.micol.potal.member.service.MemberVO">
+		INSERT INTO MEMBER(ID, PASSWORD, NAME, TEL, ADDRESS, IMGFILE, PIMGFILE)
+		VALUES(#{id}, #{password}, #{name}, #{tel}, #{address}, #{imgfile}, #{pimgfile})
+	</insert>
+	
+	<update id="memberUpdate" parameterType="co.micol.potal.member.service.MemberVO">
+		UPDATE MEMBER
+		<if test="password != null"> SET PASSWORD = #{password}</if>
+		<if test="name != null"> SET NAME = #{name}</if>
+		<if test="tel != null"> SET TEL = #{tel}</if>
+		<if test="address != null"> SET ADDRESS = #{address}</if>
+		<if test="author != null"> SET AUTHOR = #{author}</if>
+		<if test="imgfile != null"> SET IMGFILE = #{imgfile}</if>
+		<if test="pimgfile != null"> SET PIMGFILE = #{pimgfile}</if>
+		WHERE ID = #{id}
+	</update>
+	
+	<delete id="memberDelete" parameterType="co.micol.potal.member.service.MemberVO">
+		DELETE FROM MEMBER WHERE ID = #{id}
+	</delete>
+	<select id="memberIdCheck" parameterType="String" resultType="boolean">
+		<!-- id가 존재하면 true 존재하지않으면 false 반환 -->
+		SELECT (CASE WHEN COUNT(*) = 1 THEN 1 ELSE 0 END) AS RESULT
+		FROM MEMBER
+		WHERE ID = #{id}		
+	</select>
+</mapper>
